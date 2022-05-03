@@ -2,9 +2,9 @@ package com.company;
 
 public class Cell {
     private boolean state;
-    private int aliveNeighbours;
+    private byte aliveNeighbours;
 
-    public Cell(boolean state, int aliveNeighbours) {
+    public Cell(boolean state, byte aliveNeighbours) {
         this.state = state;
         this.aliveNeighbours = aliveNeighbours;
     }
@@ -22,7 +22,7 @@ public class Cell {
         return this.state;
     }
 
-    public void setAliveNeighbours(int newAmount) {
+    public void setAliveNeighbours(byte newAmount) {
         if (newAmount >= 0 && newAmount <= 8) this.aliveNeighbours = newAmount;
         else this.aliveNeighbours = 0;
 

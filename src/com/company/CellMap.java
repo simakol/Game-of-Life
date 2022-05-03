@@ -43,14 +43,13 @@ public class CellMap {
             }
         }
 
-
     }
 
     private void gridToCells() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 boolean state = grid[x][y] == 1;
-                currentGen[x][y] = new Cell(state, 0);
+                currentGen[x][y] = new Cell(state, (byte) 0);
             }
         }
         calculateAndSetNeighbours();
@@ -67,14 +66,14 @@ public class CellMap {
 
     private void setCell(int x, int y) {
         boolean state = currentGen[x][y].getState();
-        currentGen[x][y] = new Cell(state, 0);
-        nextGen[x][y] = new Cell(false, 0);
+        currentGen[x][y] = new Cell(state, (byte)0);
+        nextGen[x][y] = new Cell(false, (byte)0);
     }
 
     private void calculateAndSetNeighbours() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                int aliveNeighbours = 0;
+                byte aliveNeighbours = 0;
                 for (int xn = -1; xn <= 1; xn++) {
                     for (int yn = -1; yn <= 1; yn++) {
                         if ((x + xn >= 0 && x + xn < width) && (y + yn >= 0 && y + yn < height)) {
@@ -94,6 +93,7 @@ public class CellMap {
             for (int y = 0; y < height; y++) {
                 int aliveNeighbours = currentGen[x][y].getAliveNeighbours();
                 boolean state = currentGen[x][y].getState();
+
                 if (aliveNeighbours < 2 || aliveNeighbours > 3) nextGen[x][y].setState(false);
                 else if (aliveNeighbours == 3 && !state) nextGen[x][y].setState(true);
                 else nextGen[x][y] = currentGen[x][y];
