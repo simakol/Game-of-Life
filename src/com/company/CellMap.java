@@ -104,9 +104,7 @@ public class CellMap {
 
     private void nextGetToCurrent() {
         for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                currentGen[x][y] = nextGen[x][y];
-            }
+            if (height >= 0) System.arraycopy(nextGen[x], 0, currentGen[x], 0, height);
         }
     }
 
