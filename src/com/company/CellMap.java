@@ -28,7 +28,6 @@ public class CellMap {
             System.exit(0);
         }
 
-
         this.generationNum = 1;
         this.grid = grid;
         this.currentGen = new Cell[width][height];
@@ -40,7 +39,7 @@ public class CellMap {
 
         while (true) {
             int alive = 0;
-            System.out.println(generationNum + " generation");
+            System.out.println(ANSI_GREEN + generationNum + ANSI_RESET + " generation");
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (!currentGen[x][y].getState())
@@ -61,11 +60,10 @@ public class CellMap {
                 System.exit(0);
             }
 
-            fillCells();
             nextGen();
             generationNum++;
             try {
-                Thread.sleep(1500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 System.out.println(e);
             }
@@ -78,24 +76,10 @@ public class CellMap {
             for (int y = 0; y < height; y++) {
                 boolean state = grid[x][y] == 1;
                 currentGen[x][y] = new Cell(state, (byte) 0);
+                nextGen[x][y] = new Cell();
             }
         }
         calculateAndSetNeighbours();
-    }
-
-    private void fillCells() {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                setCell(x, y);
-            }
-        }
-        calculateAndSetNeighbours();
-    }
-
-    private void setCell(int x, int y) {
-        boolean state = currentGen[x][y].getState();
-        currentGen[x][y] = new Cell(state, (byte) 0);
-        nextGen[x][y] = new Cell(false, (byte) 0);
     }
 
     private void calculateAndSetNeighbours() {
@@ -128,6 +112,7 @@ public class CellMap {
             }
         }
         nextGetToCurrent();
+        calculateAndSetNeighbours();
     }
 
     private void nextGetToCurrent() {
