@@ -8,13 +8,19 @@ public class CellMap {
     private final Cell[][] currentGen;
     private final Cell[][] nextGen;
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+
     public CellMap(int[][] grid) {
         try {
             this.width = grid[0].length;
             this.height = grid.length;
 
             if (this.width <= 0) {
-                throw new GridSizeError("Incorrect grid size.");
+                throw new GridSizeError(ANSI_RED + "Incorrect grid size." + ANSI_RESET);
             }
 
         } catch (GridSizeError ex) {
@@ -38,10 +44,11 @@ public class CellMap {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (!currentGen[x][y].getState())
-                        System.out.print(" . ");
+                        System.out.print(ANSI_WHITE + " . " + ANSI_RESET);
                     else {
                         alive++;
-                        System.out.print(" * ");
+                        System.out.print(ANSI_GREEN + " * " + ANSI_RESET);
+
                     }
                 }
                 System.out.println();
@@ -50,7 +57,7 @@ public class CellMap {
 
 
             if (alive == 0) {
-                System.out.println("Empty field! Game over!");
+                System.out.print(ANSI_BLUE + "Empty field! Game over!" + ANSI_RESET);
                 System.exit(0);
             }
 
