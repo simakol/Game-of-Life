@@ -1,16 +1,28 @@
 package com.company;
 
 public class CellMap {
-    private final int width;
-    private final int height;
+    private int width;
+    private int height;
     private int generationNum;
     private final int[][] grid;
     private final Cell[][] currentGen;
     private final Cell[][] nextGen;
 
     public CellMap(int[][] grid) {
-        this.width = grid[0].length;
-        this.height = grid.length;
+        try {
+            this.width = grid[0].length;
+            this.height = grid.length;
+
+            if (this.width <= 0) {
+                throw new GridSizeError("Incorrect grid size.");
+            }
+
+        } catch (GridSizeError ex) {
+            System.out.println(ex.getMessage());
+            System.exit(0);
+        }
+
+
         this.generationNum = 1;
         this.grid = grid;
         this.currentGen = new Cell[width][height];
@@ -21,17 +33,26 @@ public class CellMap {
         gridToCells();
 
         while (true) {
+            int alive = 0;
             System.out.println(generationNum + " generation");
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (!currentGen[x][y].getState())
                         System.out.print(" . ");
-                    else
+                    else {
+                        alive++;
                         System.out.print(" * ");
+                    }
                 }
                 System.out.println();
             }
             System.out.println();
+
+
+            if (alive == 0) {
+                System.out.println("Empty field! Game over!");
+                System.exit(0);
+            }
 
             fillCells();
             nextGen();
@@ -66,8 +87,8 @@ public class CellMap {
 
     private void setCell(int x, int y) {
         boolean state = currentGen[x][y].getState();
-        currentGen[x][y] = new Cell(state, (byte)0);
-        nextGen[x][y] = new Cell(false, (byte)0);
+        currentGen[x][y] = new Cell(state, (byte) 0);
+        nextGen[x][y] = new Cell(false, (byte) 0);
     }
 
     private void calculateAndSetNeighbours() {
@@ -91,7 +112,7 @@ public class CellMap {
     private void nextGen() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                int aliveNeighbours = currentGen[x][y].getAliveNeighbours();
+                byte aliveNeighbours = currentGen[x][y].getAliveNeighbours();
                 boolean state = currentGen[x][y].getState();
 
                 if (aliveNeighbours < 2 || aliveNeighbours > 3) nextGen[x][y].setState(false);
@@ -105,6 +126,13 @@ public class CellMap {
     private void nextGetToCurrent() {
         for (int x = 0; x < width; x++) {
             if (height >= 0) System.arraycopy(nextGen[x], 0, currentGen[x], 0, height);
+        }
+    }
+
+    class GridSizeError extends Exception {
+
+        public GridSizeError(String message) {
+            super(message);
         }
     }
 

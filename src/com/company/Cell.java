@@ -28,7 +28,7 @@ public class Cell {
 
     }
 
-    public int getAliveNeighbours() {
+    public byte getAliveNeighbours() {
         return this.aliveNeighbours;
     }
 }
