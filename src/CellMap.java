@@ -1,4 +1,4 @@
-package com.company;
+import config.Color;
 
 public class CellMap {
     private int width;
@@ -8,19 +8,13 @@ public class CellMap {
     private final Cell[][] currentGen;
     private final Cell[][] nextGen;
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-
     public CellMap(int[][] grid) {
         try {
             this.width = grid[0].length;
             this.height = grid.length;
 
             if (this.width <= 0) {
-                throw new GridSizeError(ANSI_RED + "Incorrect grid size." + ANSI_RESET);
+                throw new GridSizeError(Color.RED.getCode() + "Incorrect grid size." + Color.RESET.getCode());
             }
 
         } catch (GridSizeError ex) {
@@ -39,14 +33,14 @@ public class CellMap {
 
         while (true) {
             int alive = 0;
-            System.out.println(ANSI_GREEN + generationNum + ANSI_RESET + " generation");
+            System.out.println(Color.GREEN.getCode() + generationNum + Color.RESET.getCode() + " generation");
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     if (!currentGen[x][y].getState())
-                        System.out.print(ANSI_WHITE + " . " + ANSI_RESET);
+                        System.out.print(Color.WHITE.getCode() + " . " + Color.RESET.getCode());
                     else {
                         alive++;
-                        System.out.print(ANSI_GREEN + " * " + ANSI_RESET);
+                        System.out.print(Color.GREEN.getCode() + " * " + Color.RESET.getCode());
 
                     }
                 }
@@ -56,7 +50,7 @@ public class CellMap {
 
 
             if (alive == 0) {
-                System.out.print(ANSI_BLUE + "Empty field! Game over!" + ANSI_RESET);
+                System.out.print(Color.BLUE.getCode() + "Empty field! Game over!" + Color.RESET.getCode());
                 System.exit(0);
             }
 
@@ -111,11 +105,11 @@ public class CellMap {
                 else nextGen[x][y] = currentGen[x][y];
             }
         }
-        nextGetToCurrent();
+        nextGenToCurrent();
         calculateAndSetNeighbours();
     }
 
-    private void nextGetToCurrent() {
+    private void nextGenToCurrent() {
         for (int x = 0; x < width; x++) {
             if (height >= 0) System.arraycopy(nextGen[x], 0, currentGen[x], 0, height);
         }

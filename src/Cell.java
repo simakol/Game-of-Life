@@ -1,5 +1,3 @@
-package com.company;
-
 public class Cell {
     private boolean state;
     private byte aliveNeighbours;
